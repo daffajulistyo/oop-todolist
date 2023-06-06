@@ -1,15 +1,21 @@
 <?php
 
-require_once __DIR__ . "/Model/TodoList.PHP";
-require_once __DIR__ . "/BusinessLogic/AddTodoList.PHP";
-require_once __DIR__ . "/BusinessLogic/ShowTodoList.PHP";
-require_once __DIR__ . "/BusinessLogic/RemoveTodoList.PHP";
-require_once __DIR__ . "/View/ViewAddTodoList.PHP";
-require_once __DIR__ . "/View/ViewShowTodoList.PHP";
-require_once __DIR__ . "/View/ViewRemoveTodoList.PHP";
-require_once __DIR__ . "/Helper/input.php";
+require_once __DIR__ . '/Entity/Todolist.php';
+require_once __DIR__ . '/Helper/InputHelper.php';
+require_once __DIR__ . '/Repository/TodolistRepository.php';
+require_once __DIR__ . '/Service/TodolistService.php';
+require_once __DIR__ . '/View/TodolistView.php';
+require_once __DIR__ . '/Config/Database.php';
 
+use Repository\TodolistRepositoryImpl;
+use Service\TodolistServiceImpl;
+use View\TodolistView;
 
-echo "Aplikasi To Do List" . PHP_EOL;
+echo "Aplikasi Todolist" . PHP_EOL;
 
-viewShowTodoList();
+$connection = \Config\Database::getConnection();
+$todolistRepository = new TodolistRepositoryImpl($connection);
+$todolistService = new TodolistServiceImpl($todolistRepository);
+$todolistView = new TodolistView($todolistService);
+
+$todolistView->showTodolist();
